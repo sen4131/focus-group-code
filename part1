@@ -1,0 +1,77 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Mar 10 09:20:06 2018
+
+@author: Sen
+"""
+import nltk
+import re, string
+from nltk import FreqDist
+from nltk.tokenize import word_tokenize
+from nltk.stem.porter import PorterStemmer
+import os
+
+path = "C:/Users/Sen/Downloads/CUS 635 (Web data mining)/Project/Data/Week1/"
+pathw2 = "C:/Users/Sen/Downloads/CUS 635 (Web data mining)/Project/Data/Week2/"
+
+def test(path):
+    prefix = os.listdir(path)
+    print(prefix)
+    
+    dataset={}
+    dataset_raw = {}
+    allFeatures=set()
+    tot_articles = 0
+    articles_count={}
+    globaltoken=[]
+    
+    N={} # Number of articles in each corpus
+    
+    for question in prefix:
+        fileName=path+question
+        print(fileName)
+        f=open(fileName,'r',encoding="utf8")
+        text = ''
+        text_raw = ''    
+        lines=f.readlines()
+        tot_articles+=len(lines)
+        articles_count[str(question)] = len(lines)
+        dataset_raw[str(question)] = list(map(lambda line: line.lower(), lines))
+        
+        for line in lines:
+            text+=line.replace('\n',' ').lower()
+            text_raw = line.lower()
+        f.close
+        N[str(question)]=len(lines)
+        
+        
+        tokens = nltk.word_tokenize(text)
+        globaltoken+=tokens
+        dataset[str(question)] = nltk.Text(tokens)
+        
+    
+    
+    return globaltoken
+
+def remove_punctuation(corpus):
+    punctuations = ".,\"-\\/#!?$%\^&\*;:{}=\-_'~()"    
+    filtered_corpus = [token for token in corpus if (not token in punctuations)]
+    return filtered_corpus
+
+def apply_stopwording(corpus, min_len):
+    filtered_corpus = [token for token in corpus if (not token in stopwords.words('english') and len(token)>min_len)]
+    return filtered_corpus
+
+w1t = test(path)
+print(w1t)
+w2t = test(pathw2)
+print()
+print(w2t)
+
+
+
+#Let's remove punctuation characters and apply stopwording
+for question in questions:
+    print ("Processing "+ str(question)) 
+    dataset_clean[str(question)] = apply_stopwording(remove_punctuation(dataset[str(question)]), 3)
+    print (dataset_clean[str(question)])
