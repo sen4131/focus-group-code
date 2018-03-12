@@ -78,6 +78,13 @@ def apply_lemmatization(corpus):
     lemmatizer = nltk.WordNetLemmatizer()
     normalized_corpus = [lemmatizer.lemmatize(token) for token in corpus]
     return normalized_corpus
+
+def bigram(text1):
+    bigrams = nltk.collocations.BigramAssocMeasures()
+    finder = BigramCollocationFinder.from_words(text1)
+    finder.apply_freq_filter(2)
+    collocations = finder.nbest(bigrams.pmi, 20)
+    print (collocations)
     
 def main(path):
     result=test(path)
@@ -102,9 +109,7 @@ def main(path):
 w1token=main(path1)
 w2token=main(path2)
 
+bigram(w1token)
+bigram(w2token)
 
-bigrams = nltk.collocations.BigramAssocMeasures()
-finder = BigramCollocationFinder.from_words(text1)
-finder.apply_freq_filter(2)
-collocations = finder.nbest(bigrams.pmi, 20)
-print (collocations)
+
